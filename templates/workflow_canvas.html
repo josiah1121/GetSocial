@@ -1,0 +1,334 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
+    <div class="container mx-auto p-4">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-200">Workflow Builder for {{ client.name }}</h2>
+            <button id="themeToggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
+                <svg id="themeIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+            </button>
+        </div>
+        <div class="flex flex-col md:flex-row gap-4">
+            <!-- Sidebar for Components -->
+            <div class="w-full md:w-1/4 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4">
+                <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">Components</h3>
+                <div class="space-y-2">
+                    <h4 class="text-sm font-medium text-gray-600 dark:text-gray-400">Triggers</h4>
+                    <div class="component bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 p-3 rounded-lg cursor-move flex items-center" draggable="true" data-type="trigger" data-name="Post Created">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                        Post Created
+                    </div>
+                    <div class="component bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 p-3 rounded-lg cursor-move flex items-center" draggable="true" data-type="trigger" data-name="Post Approved">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        Post Approved
+                    </div>
+                    <h4 class="text-sm font-medium text-gray-600 dark:text-gray-400 mt-4">Actions</h4>
+                    <div class="component bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 p-3 rounded-lg cursor-move flex items-center" draggable="true" data-type="action" data-name="Assign Approvers">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 005.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                        Assign Approvers
+                    </div>
+                    <div class="component bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 p-3 rounded-lg cursor-move flex items-center" draggable="true" data-type="action" data-name="Set Deadline">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                        Set Deadline
+                    </div>
+                    <div class="component bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 p-3 rounded-lg cursor-move flex items-center" draggable="true" data-type="action" data-name="Queue Post">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
+                        Queue Post
+                    </div>
+                    <div class="component bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 p-3 rounded-lg cursor-move flex items-center" draggable="true" data-type="action" data-name="Post Now">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                        Post Now
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <input type="text" id="workflowName" class="w-full p-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200" placeholder="Workflow Name" value="New Workflow">
+                    <button id="saveWorkflow" class="mt-2 w-full p-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition">Save Workflow</button>
+                    <button id="clearCanvas" class="mt-2 w-full p-2 rounded-lg bg-gray-600 text-white hover:bg-gray-700 transition">Clear Canvas</button>
+                </div>
+                <div class="mt-4">
+                    <h4 class="text-sm font-medium text-gray-600 dark:text-gray-400">Load Workflow</h4>
+                    <select id="workflowSelect" class="w-full p-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
+                        <option value="">Select a Workflow</option>
+                        {% for workflow in workflows %}
+                        <option value="{{ workflow.id }}">{{ workflow.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <!-- Workflow Area -->
+            <div class="w-full md:w-3/4 bg-white dark:bg-gray-800 rounded-lg shadow-lg relative" style="min-height: 600px;">
+                <div id="workflowArea" class="relative w-full h-full"></div>
+                <canvas id="connectionCanvas" class="absolute top-0 left-0 w-full h-full" style="pointer-events: none;"></canvas>
+            </div>
+        </div>
+    </div>
+    <!-- Modal for Component Config -->
+    <div class="modal fade" id="configModal" tabindex="-1" aria-labelledby="configModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200">
+                <div class="modal-header border-gray-200 dark:border-gray-700">
+                    <h5 class="modal-title" id="configModalLabel">Configure Component</h5>
+                    <button type="button" class="text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="configForm">
+                        <input type="hidden" id="configId">
+                        <div class="form-group">
+                            <label class="font-medium">Name</label>
+                            <input type="text" id="configName" class="form-control w-full p-2 rounded-lg bg-gray-200 dark:bg-gray-700" readonly>
+                        </div>
+                        <div class="form-group" id="configOptions"></div>
+                    </form>
+                </div>
+                <div class="modal-footer border-gray-200 dark:border-gray-700">
+                    <button type="button" class="p-2 rounded-lg bg-gray-600 text-white hover:bg-gray-700 transition" data-dismiss="modal">Close</button>
+                    <button type="button" class="p-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition" id="saveConfig">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    const workflowArea = document.getElementById('workflowArea');
+    const canvas = document.getElementById('connectionCanvas');
+    const ctx = canvas.getContext('2d');
+    const GRID_SIZE = 50;
+    let components = [];
+    let connections = [];
+    let draggingComponent = null;
+    let selectedComponent = null;
+
+    // Resize canvas to match workflow area
+    function resizeCanvas() {
+        canvas.width = workflowArea.offsetWidth;
+        canvas.height = workflowArea.offsetHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    // Component types
+    const componentTypes = {
+        'Post Created': { type: 'trigger', options: [] },
+        'Post Approved': { type: 'trigger', options: [] },
+        'Assign Approvers': { type: 'action', options: [
+            { name: 'approvers', type: 'select', label: 'Select Approvers', multiple: true, values: {{ client.approvers|map(attribute='username')|list|tojson }} }
+        ]},
+        'Set Deadline': { type: 'action', options: [
+            { name: 'days', type: 'number', label: 'Deadline Days', value: 7 }
+        ]},
+        'Queue Post': { type: 'action', options: [] },
+        'Post Now': { type: 'action', options: [
+            { name: 'platform', type: 'select', label: 'Platform', values: ['Twitter', 'Facebook', 'Instagram'] }
+        ]}
+    };
+
+    // Snap to grid
+    function snapToGrid(coord) {
+        return Math.round(coord / GRID_SIZE) * GRID_SIZE;
+    }
+
+    // Draw connections
+    function drawConnections() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        connections.forEach(conn => {
+            const from = components.find(c => c.id === conn.from);
+            const to = components.find(c => c.id === conn.to);
+            if (from && to) {
+                ctx.beginPath();
+                ctx.moveTo(from.x + 120, from.y + 20);
+                ctx.lineTo(to.x, to.y + 20);
+                ctx.strokeStyle = '#4B5563';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                // Arrowhead
+                const angle = Math.atan2(to.y - from.y, to.x - from.x);
+                ctx.beginPath();
+                ctx.moveTo(to.x - 10 * Math.cos(angle - Math.PI/6), to.y - 10 * Math.sin(angle - Math.PI/6));
+                ctx.lineTo(to.x, to.y);
+                ctx.lineTo(to.x - 10 * Math.cos(angle + Math.PI/6), to.y - 10 * Math.sin(angle + Math.PI/6));
+                ctx.stroke();
+            }
+        });
+    }
+
+    // Create component DOM element
+    function createComponentElement(comp) {
+        const div = document.createElement('div');
+        div.className = `absolute p-3 rounded-lg shadow-md cursor-move flex items-center ${comp.type === 'trigger' ? 'bg-blue-500 text-white' : 'bg-green-500 text-white'}`;
+        div.style.left = `${comp.x}px`;
+        div.style.top = `${comp.y}px`;
+        div.dataset.id = comp.id;
+        div.innerHTML = `
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${comp.type === 'trigger' ? 'M5 13l4 4L19 7' : 'M9 5l7 7-7 7'}" />
+            </svg>
+            ${comp.name}
+        `;
+        div.draggable = true;
+        div.addEventListener('dragstart', (e) => {
+            draggingComponent = comp;
+            e.dataTransfer.setData('text/plain', comp.id);
+        });
+        div.addEventListener('click', () => {
+            selectedComponent = comp;
+            $('#configModal').modal('show');
+            $('#configName').val(comp.name);
+            $('#configId').val(comp.id);
+            const optionsHtml = comp.options.map(opt => {
+                if (opt.type === 'select') {
+                    return `
+                        <div class="form-group">
+                            <label class="font-medium">${opt.label}</label>
+                            <select class="w-full p-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200" name="${opt.name}" ${opt.multiple ? 'multiple' : ''}>
+                                ${opt.values.map(val => `<option value="${val}" ${opt.value && opt.value.includes(val) ? 'selected' : ''}>${val}</option>`).join('')}
+                            </select>
+                        </div>`;
+                } else if (opt.type === 'number') {
+                    return `
+                        <div class="form-group">
+                            <label class="font-medium">${opt.label}</label>
+                            <input type="number" class="w-full p-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200" name="${opt.name}" value="${opt.value || ''}">
+                        </div>`;
+                }
+            }).join('');
+            $('#configOptions').html(optionsHtml);
+        });
+        workflowArea.appendChild(div);
+    }
+
+    // Drag and drop from sidebar
+    document.querySelectorAll('.component').forEach(comp => {
+        comp.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('type', comp.dataset.type);
+            e.dataTransfer.setData('name', comp.dataset.name);
+        });
+    });
+
+    workflowArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+    });
+
+    workflowArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        const rect = workflowArea.getBoundingClientRect();
+        const x = snapToGrid(e.clientX - rect.left);
+        const y = snapToGrid(e.clientY - rect.top);
+        const type = e.dataTransfer.getData('type');
+        const name = e.dataTransfer.getData('name');
+        if (type && name) {
+            const id = 'comp-' + components.length;
+            const comp = { id, type, name, x, y, options: JSON.parse(JSON.stringify(componentTypes[name].options)) };
+            components.push(comp);
+            if (components.length > 1) {
+                connections.push({ from: components[components.length - 2].id, to: id });
+            }
+            createComponentElement(comp);
+            drawConnections();
+        } else if (draggingComponent) {
+            draggingComponent.x = snapToGrid(e.clientX - rect.left);
+            draggingComponent.y = snapToGrid(e.clientY - rect.top);
+            const element = workflowArea.querySelector(`[data-id="${draggingComponent.id}"]`);
+            element.style.left = `${draggingComponent.x}px`;
+            element.style.top = `${draggingComponent.y}px`;
+            drawConnections();
+            draggingComponent = null;
+        }
+    });
+
+    // Save config
+    document.getElementById('saveConfig').addEventListener('click', () => {
+        const id = $('#configId').val();
+        const comp = components.find(c => c.id === id);
+        if (comp) {
+            comp.options.forEach(opt => {
+                if (opt.type === 'select' && opt.multiple) {
+                    opt.value = $(`select[name="${opt.name}"]`).val();
+                } else if (opt.type === 'select') {
+                    opt.value = $(`select[name="${opt.name}"]`).val();
+                } else if (opt.type === 'number') {
+                    opt.value = $(`input[name="${opt.name}"]`).val();
+                }
+            });
+            const element = workflowArea.querySelector(`[data-id="${comp.id}"]`);
+            element.innerHTML = `
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${comp.type === 'trigger' ? 'M5 13l4 4L19 7' : 'M9 5l7 7-7 7'}" />
+                </svg>
+                ${comp.name}
+            `;
+            drawConnections();
+        }
+        $('#configModal').modal('hide');
+    });
+
+    // Save workflow
+    document.getElementById('saveWorkflow').addEventListener('click', () => {
+        const name = document.getElementById('workflowName').value || 'Unnamed Workflow';
+        fetch('/save_workflow/{{ client.id }}', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, components, connections })
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert('Workflow saved with ID: ' + data.workflow_id);
+            window.location.reload();
+        });
+    });
+
+    // Clear canvas
+    document.getElementById('clearCanvas').addEventListener('click', () => {
+        components = [];
+        connections = [];
+        workflowArea.innerHTML = '';
+        drawConnections();
+    });
+
+    // Load workflow
+    document.getElementById('workflowSelect').addEventListener('change', () => {
+        const workflowId = document.getElementById('workflowSelect').value;
+        if (workflowId) {
+            fetch(`/load_workflow/${workflowId}`)
+                .then(response => response.json())
+                .then(data => {
+                    components = data.components;
+                    connections = data.components.filter(c => c.from && c.to) || [];
+                    document.getElementById('workflowName').value = data.name;
+                    workflowArea.innerHTML = '';
+                    components.forEach(comp => createComponentElement(comp));
+                    drawConnections();
+                });
+        }
+    });
+
+    // Theme toggle
+    document.getElementById('themeToggle').addEventListener('click', () => {
+        document.documentElement.classList.toggle('dark');
+        const icon = document.getElementById('themeIcon');
+        if (document.documentElement.classList.contains('dark')) {
+            icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />';
+        } else {
+            icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />';
+        }
+    });
+
+    // Initial render
+    drawConnections();
+</script>
+
+<style>
+    html { transition: background-color 0.3s, color 0.3s; }
+    .dark { background-color: #1F2937; color: #E5E7EB; }
+    .component { transition: background-color 0.2s, transform 0.2s; }
+    .component:hover { transform: scale(1.05); }
+    .modal-content { transition: background-color 0.3s, color 0.3s; }
+</style>
+{% endblock %}

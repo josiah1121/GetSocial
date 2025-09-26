@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="text-center">
+    <h1 class="text-4xl font-bold text-gray-800 dark:text-gray-200 mb-4">Welcome to SocialGit</h1>
+    <p class="text-lg text-gray-600 dark:text-gray-400 mb-6">A modern platform for social media managers to streamline workflows and approvals, inspired by GitHub.</p>
+    {% if not session.user_id %}
+    <a href="/register" class="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Get Started</a>
+    {% else %}
+    <a href="/dashboard" class="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Go to Dashboard</a>
+    {% endif %}
+</div>
+{% endblock %}

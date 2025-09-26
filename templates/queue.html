@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="max-w-3xl mx-auto">
+    <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">Queue Management</h2>
+    <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">Approved Posts (Ready to Queue)</h3>
+    <div class="space-y-3">
+        {% for post in approved_posts %}
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 flex justify-between items-center transform hover:-translate-y-1 transition">
+            <div>
+                <span class="text-blue-600 dark:text-blue-400">{{ post.id[:8] }}...</span> - {{ post.content[:50] }}{% if post.content|length > 50 %}...{% endif %}
+            </div>
+            <form method="POST" class="inline-block">
+                <input type="hidden" name="post_id" value="{{ post.id }}">
+                <button type="submit" name="action" value="queue" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Queue</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+    <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mt-6 mb-3">Queued Posts</h3>
+    <div class="space-y-3">
+        {% for post in queued_posts %}
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 flex justify-between items-center transform hover:-translate-y-1 transition">
+            <div>
+                <span class="text-blue-600 dark:text-blue-400">{{ post.id[:8] }}...</span> - {{ post.content[:50] }}{% if post.content|length > 50 %}...{% endif %}
+            </div>
+            <form method="POST" class="inline-block">
+                <input type="hidden" name="post_id" value="{{ post.id }}">
+                <button type="submit" name="action" value="post_now" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">Post Now</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

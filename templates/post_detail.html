@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">Post {{ post.id[:8] }}...</h2>
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
+        <p class="text-gray-600 dark:text-gray-400"><strong>Client ID:</strong> {{ post.client_id }}</p>
+        <p class="text-gray-600 dark:text-gray-400"><strong>Content:</strong> {{ post.content }}</p>
+        <p class="text-gray-600 dark:text-gray-400"><strong>Status:</strong> 
+            <span class="px-2 py-1 rounded-full text-sm {% if post.status == 'draft' %}bg-gray-200 text-gray-800{% elif post.status == 'pending' %}bg-yellow-200 text-yellow-800{% elif post.status == 'approved' %}bg-green-200 text-green-800{% elif post.status == 'queued' %}bg-blue-200 text-blue-800{% else %}bg-blue-600 text-white{% endif %}">
+                {{ post.status|capitalize }}
+            </span>
+        </p>
+        <p class="text-gray-600 dark:text-gray-400"><strong>Schedule Date:</strong> {{ post.schedule_date or 'Not set' }}</p>
+        <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mt-4">Approvals</h3>
+        <ul class="space-y-2">
+            {% for approval in post.approvals %}
+            <li class="text-gray-600 dark:text-gray-400">{{ approval.user.username }}: 
+                <span class="px-2 py-1 rounded-full text-sm {% if approval.status == 'pending' %}bg-yellow-200 text-yellow-800{% elif approval.status == 'approved' %}bg-green-200 text-green-800{% else %}bg-red-200 text-red-800{% endif %}">
+                    {{ approval.status|capitalize }}
+                </span>
+            </li>
+            {% endfor %}
+        </ul>
+        {% if post.status == 'pending' and any(a.user_id == current_user.id and a.status == 'pending' for a in post.approvals) %}
+        <form method="POST" class="mt-4 space-x-2">
+            <button type="submit" name="action" value="approve" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">Approve</button>
+            <button type="submit" name="action" value="reject" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">Reject</button>
+        </form>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
