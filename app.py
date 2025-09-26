@@ -3,8 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
 import uuid
-import os
 import json
+import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key_here'  # Change this to a secure random key in production
@@ -23,7 +23,9 @@ class Client(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), unique=True, nullable=False)
     deadline_days = db.Column(db.Integer, default=7)
+    active_workflow_id = db.Column(db.Integer, db.ForeignKey('workflow.id'), nullable=True)
     approvers = db.relationship('User', secondary='client_approvers', backref='clients')
+    active_workflow = db.relationship('Workflow', foreign_keys=[active_workflow_id])
 
 client_approvers = db.Table('client_approvers',
     db.Column('client_id', db.Integer, db.ForeignKey('client.id'), primary_key=True),
@@ -38,12 +40,14 @@ class Post(db.Model):
     schedule_date = db.Column(db.Date)
     status = db.Column(db.String(20), default='draft')  # draft, pending, approved, queued, posted
     approvals = db.relationship('Approval', backref='post', lazy=True)
+    client = db.relationship('Client', backref='posts')
 
 class Approval(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     post_id = db.Column(db.String(36), db.ForeignKey('post.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     status = db.Column(db.String(20), default='pending')  # pending, approved, rejected
+    user = db.relationship('User', backref='approvals')
 
 class Workflow(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -61,9 +65,40 @@ def login_required(f):
     wrap.__name__ = f.__name__
     return wrap
 
+# Apply workflow actions to a post
+def apply_workflow(post, workflow):
+    if not workflow:
+        app.logger.info("No active workflow for post")
+        return
+    components = json.loads(workflow.components)
+    app.logger.info(f"Applying workflow with components: {components}")
+    for comp in components:
+        if comp['type'] == 'action':
+            if comp['name'] == 'Assign Approvers' and comp['options']:
+                approver_usernames = next((opt['value'] for opt in comp['options'] if opt['name'] == 'approvers'), [])
+                app.logger.info(f"Assigning approvers: {approver_usernames}")
+                for username in approver_usernames:
+                    user = User.query.filter_by(username=username).first()
+                    if user and user not in post.client.approvers:
+                        post.client.approvers.append(user)
+                    approval = Approval.query.filter_by(post_id=post.id, user_id=user.id).first()
+                    if not approval:
+                        approval = Approval(post_id=post.id, user_id=user.id, status='pending')
+                        db.session.add(approval)
+                        app.logger.info(f"Added approval for {username}")
+            elif comp['name'] == 'Set Deadline' and comp['options']:
+                days = next((int(opt['value']) for opt in comp['options'] if opt['name'] == 'days'), 7)
+                post.schedule_date = (post.created_at + datetime.timedelta(days=days)).date()
+            elif comp['name'] == 'Queue Post':
+                post.status = 'queued'
+            elif comp['name'] == 'Post Now':
+                post.status = 'posted'  # Simulated; add real API call here
+    db.session.commit()
+
 # Routes
 @app.route('/')
 def index():
+    app.logger.info("Accessing index route")
     return render_template('index.html')
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -98,6 +133,12 @@ def login():
 @app.route('/logout')
 def logout():
     session.clear()
+    return redirect(url_for('index'))
+
+@app.route('/clear_session')
+def clear_session():
+    session.clear()
+    app.logger.info("Session cleared")
     return redirect(url_for('index'))
 
 @app.route('/dashboard')
@@ -140,10 +181,14 @@ def client_posts(client_id):
         schedule_date = datetime.datetime.strptime(schedule_date_str, '%Y-%m-%d').date() if schedule_date_str else None
         post = Post(client_id=client_id, content=content, schedule_date=schedule_date, status='pending')
         db.session.add(post)
-        # Initialize approvals for each approver
-        for approver in client.approvers:
-            approval = Approval(post_id=post.id, user_id=approver.id)
-            db.session.add(approval)
+        # Apply active workflow if exists
+        if client.active_workflow:
+            apply_workflow(post, client.active_workflow)
+        else:
+            # Default behavior: assign client approvers
+            for approver in client.approvers:
+                approval = Approval(post_id=post.id, user_id=approver.id)
+                db.session.add(approval)
         db.session.commit()
         flash('Post created.')
         return redirect(url_for('client_posts', client_id=client_id))
@@ -170,6 +215,10 @@ def post_detail(post_id):
         all_approvals = Approval.query.filter_by(post_id=post_id).all()
         if all(a.status == 'approved' for a in all_approvals):
             post.status = 'approved'
+            # Apply workflow if "Post Approved" trigger exists
+            workflow = post.client.active_workflow
+            if workflow and any(comp['name'] == 'Post Approved' for comp in json.loads(workflow.components)):
+                apply_workflow(post, workflow)
             db.session.commit()
         flash('Approval updated.')
         return redirect(url_for('post_detail', post_id=post_id))
@@ -199,7 +248,6 @@ def queue():
             post.status = 'posted'
             db.session.commit()
             flash('Post posted (simulated API call).')
-            # In real app, integrate with social media APIs here (e.g., Twitter, Facebook)
         return redirect(url_for('queue'))
     queued_posts = Post.query.filter_by(status='queued').all()
     approved_posts = Post.query.filter_by(status='approved').all()
@@ -222,6 +270,20 @@ def save_workflow(client_id):
     db.session.add(workflow)
     db.session.commit()
     return jsonify({'status': 'success', 'workflow_id': workflow.id})
+
+@app.route('/set_active_workflow/<int:client_id>/<int:workflow_id>', methods=['POST'])
+@login_required
+def set_active_workflow(client_id, workflow_id):
+    client = Client.query.get_or_404(client_id)
+    if workflow_id == 0:
+        client.active_workflow_id = None
+    else:
+        workflow = Workflow.query.get_or_404(workflow_id)
+        if workflow.client_id != client_id:
+            return jsonify({'status': 'error', 'message': 'Workflow does not belong to this client'}), 403
+        client.active_workflow_id = workflow_id
+    db.session.commit()
+    return jsonify({'status': 'success'})
 
 @app.route('/load_workflow/<int:workflow_id>')
 @login_required

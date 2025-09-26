@@ -4,7 +4,7 @@
     <div class="container mx-auto p-4">
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-200">Workflow Builder for {{ client.name }}</h2>
-            <button id="themeToggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
+            <button id="themeToggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 transition">
                 <svg id="themeIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
                 </svg>
@@ -16,28 +16,28 @@
                 <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">Components</h3>
                 <div class="space-y-2">
                     <h4 class="text-sm font-medium text-gray-600 dark:text-gray-400">Triggers</h4>
-                    <div class="component bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 p-3 rounded-lg cursor-move flex items-center" draggable="true" data-type="trigger" data-name="Post Created">
+                    <div class="component bg-gradient-to-r from-blue-400 to-blue-600 text-white p-3 rounded-lg cursor-move flex items-center" draggable="true" data-type="trigger" data-name="Post Created">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
                         Post Created
                     </div>
-                    <div class="component bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 p-3 rounded-lg cursor-move flex items-center" draggable="true" data-type="trigger" data-name="Post Approved">
+                    <div class="component bg-gradient-to-r from-blue-400 to-blue-600 text-white p-3 rounded-lg cursor-move flex items-center" draggable="true" data-type="trigger" data-name="Post Approved">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                         Post Approved
                     </div>
                     <h4 class="text-sm font-medium text-gray-600 dark:text-gray-400 mt-4">Actions</h4>
-                    <div class="component bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 p-3 rounded-lg cursor-move flex items-center" draggable="true" data-type="action" data-name="Assign Approvers">
+                    <div class="component bg-gradient-to-r from-green-400 to-green-600 text-white p-3 rounded-lg cursor-move flex items-center" draggable="true" data-type="action" data-name="Assign Approvers">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 005.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                         Assign Approvers
                     </div>
-                    <div class="component bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 p-3 rounded-lg cursor-move flex items-center" draggable="true" data-type="action" data-name="Set Deadline">
+                    <div class="component bg-gradient-to-r from-green-400 to-green-600 text-white p-3 rounded-lg cursor-move flex items-center" draggable="true" data-type="action" data-name="Set Deadline">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                         Set Deadline
                     </div>
-                    <div class="component bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 p-3 rounded-lg cursor-move flex items-center" draggable="true" data-type="action" data-name="Queue Post">
+                    <div class="component bg-gradient-to-r from-green-400 to-green-600 text-white p-3 rounded-lg cursor-move flex items-center" draggable="true" data-type="action" data-name="Queue Post">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
                         Queue Post
                     </div>
-                    <div class="component bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 p-3 rounded-lg cursor-move flex items-center" draggable="true" data-type="action" data-name="Post Now">
+                    <div class="component bg-gradient-to-r from-green-400 to-green-600 text-white p-3 rounded-lg cursor-move flex items-center" draggable="true" data-type="action" data-name="Post Now">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
                         Post Now
                     </div>
@@ -45,21 +45,35 @@
                 <div class="mt-4">
                     <input type="text" id="workflowName" class="w-full p-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200" placeholder="Workflow Name" value="New Workflow">
                     <button id="saveWorkflow" class="mt-2 w-full p-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition">Save Workflow</button>
+                    <button id="setActiveWorkflow" class="mt-2 w-full p-2 rounded-lg bg-green-600 text-white hover:bg-green-700 transition {% if client.active_workflow_id %}hidden{% endif %}">Set as Active</button>
                     <button id="clearCanvas" class="mt-2 w-full p-2 rounded-lg bg-gray-600 text-white hover:bg-gray-700 transition">Clear Canvas</button>
                 </div>
                 <div class="mt-4">
-                    <h4 class="text-sm font-medium text-gray-600 dark:text-gray-400">Load Workflow</h4>
+                    <h4 class="text-sm font-medium text-gray-600 dark:text-gray-400">Active Workflow</h4>
+                    <p class="text-gray-800 dark:text-gray-200">
+                        {% if client.active_workflow %}
+                        {{ client.active_workflow.name }} (ID: {{ client.active_workflow_id }})
+                        <button id="deactivateWorkflow" class="ml-2 p-1 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">Deactivate</button>
+                        {% else %}
+                        None
+                        {% endif %}
+                    </p>
+                    <h4 class="text-sm font-medium text-gray-600 dark:text-gray-400 mt-2">Load Workflow</h4>
                     <select id="workflowSelect" class="w-full p-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
                         <option value="">Select a Workflow</option>
                         {% for workflow in workflows %}
                         <option value="{{ workflow.id }}">{{ workflow.name }}</option>
                         {% endfor %}
                     </select>
+                    <h4 class="text-sm font-medium text-gray-600 dark:text-gray-400 mt-2">Debug: Client Approvers</h4>
+                    <p class="text-gray-800 dark:text-gray-200">
+                        {{ client.approvers|map(attribute='username')|list|tojson }}
+                    </p>
                 </div>
             </div>
             <!-- Workflow Area -->
-            <div class="w-full md:w-3/4 bg-white dark:bg-gray-800 rounded-lg shadow-lg relative" style="min-height: 600px;">
-                <div id="workflowArea" class="relative w-full h-full"></div>
+            <div class="w-full md:w-3/4 bg-white dark:bg-gray-800 rounded-lg shadow-lg relative overflow-hidden" style="min-height: 600px;">
+                <div id="workflowArea" class="relative w-full h-full" style="background: linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px), linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px); background-size: 50px 50px;"></div>
                 <canvas id="connectionCanvas" class="absolute top-0 left-0 w-full h-full" style="pointer-events: none;"></canvas>
             </div>
         </div>
@@ -118,9 +132,18 @@
     const componentTypes = {
         'Post Created': { type: 'trigger', options: [] },
         'Post Approved': { type: 'trigger', options: [] },
-        'Assign Approvers': { type: 'action', options: [
-            { name: 'approvers', type: 'select', label: 'Select Approvers', multiple: true, values: {{ client.approvers|map(attribute='username')|list|tojson }} }
-        ]},
+        'Assign Approvers': { 
+            type: 'action', 
+            options: [
+                { 
+                    name: 'approvers', 
+                    type: 'select', 
+                    label: 'Select Approvers', 
+                    multiple: true, 
+                    values: {{ client.approvers|map(attribute='username')|list|tojson }} || []
+                }
+            ]
+        },
         'Set Deadline': { type: 'action', options: [
             { name: 'days', type: 'number', label: 'Deadline Days', value: 7 }
         ]},
@@ -130,30 +153,40 @@
         ]}
     };
 
-    // Snap to grid
-    function snapToGrid(coord) {
-        return Math.round(coord / GRID_SIZE) * GRID_SIZE;
+    // Snap to grid within bounds
+    function snapToGrid(coord, max) {
+        const snapped = Math.round(coord / GRID_SIZE) * GRID_SIZE;
+        return Math.max(0, Math.min(snapped, max - 120));
     }
 
-    // Draw connections
+    // Check if grid position is occupied
+    function isGridOccupied(x, y) {
+        return components.some(comp => comp.x === x && comp.y === y);
+    }
+
+    // Draw Bezier connections
     function drawConnections() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         connections.forEach(conn => {
             const from = components.find(c => c.id === conn.from);
             const to = components.find(c => c.id === conn.to);
             if (from && to) {
+                const startX = from.x + 120;
+                const startY = from.y + 20;
+                const endX = to.x;
+                const endY = to.y + 20;
                 ctx.beginPath();
-                ctx.moveTo(from.x + 120, from.y + 20);
-                ctx.lineTo(to.x, to.y + 20);
+                ctx.moveTo(startX, startY);
+                ctx.bezierCurveTo(startX + 50, startY, endX - 50, endY, endX, endY);
                 ctx.strokeStyle = '#4B5563';
                 ctx.lineWidth = 2;
                 ctx.stroke();
                 // Arrowhead
-                const angle = Math.atan2(to.y - from.y, to.x - from.x);
+                const angle = Math.atan2(endY - startY, endX - startX);
                 ctx.beginPath();
-                ctx.moveTo(to.x - 10 * Math.cos(angle - Math.PI/6), to.y - 10 * Math.sin(angle - Math.PI/6));
-                ctx.lineTo(to.x, to.y);
-                ctx.lineTo(to.x - 10 * Math.cos(angle + Math.PI/6), to.y - 10 * Math.sin(angle + Math.PI/6));
+                ctx.moveTo(endX - 10 * Math.cos(angle - Math.PI/6), endY - 10 * Math.sin(angle - Math.PI/6));
+                ctx.lineTo(endX, endY);
+                ctx.lineTo(endX - 10 * Math.cos(angle + Math.PI/6), endY - 10 * Math.sin(angle + Math.PI/6));
                 ctx.stroke();
             }
         });
@@ -162,28 +195,40 @@
     // Create component DOM element
     function createComponentElement(comp) {
         const div = document.createElement('div');
-        div.className = `absolute p-3 rounded-lg shadow-md cursor-move flex items-center ${comp.type === 'trigger' ? 'bg-blue-500 text-white' : 'bg-green-500 text-white'}`;
+        div.className = `absolute p-3 rounded-lg shadow-md flex items-center ${comp.type === 'trigger' ? 'bg-gradient-to-r from-blue-400 to-blue-600 text-white' : 'bg-gradient-to-r from-green-400 to-green-600 text-white'} transition hover:scale-105 group`;
         div.style.left = `${comp.x}px`;
         div.style.top = `${comp.y}px`;
+        div.style.width = '120px';
         div.dataset.id = comp.id;
         div.innerHTML = `
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${comp.type === 'trigger' ? 'M5 13l4 4L19 7' : 'M9 5l7 7-7 7'}" />
             </svg>
-            ${comp.name}
+            <span class="truncate">${comp.name}</span>
+            <button class="absolute top-0 right-0 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition" title="Delete">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
         `;
         div.draggable = true;
         div.addEventListener('dragstart', (e) => {
             draggingComponent = comp;
             e.dataTransfer.setData('text/plain', comp.id);
         });
-        div.addEventListener('click', () => {
+        div.addEventListener('click', (e) => {
+            if (e.target.closest('button')) return;
             selectedComponent = comp;
             $('#configModal').modal('show');
             $('#configName').val(comp.name);
             $('#configId').val(comp.id);
             const optionsHtml = comp.options.map(opt => {
                 if (opt.type === 'select') {
+                    if (opt.values.length === 0) {
+                        return `
+                            <div class="form-group">
+                                <label class="font-medium">${opt.label}</label>
+                                <p class="text-red-500">No approvers assigned to this client. Please add approvers in the Clients page.</p>
+                            </div>`;
+                    }
                     return `
                         <div class="form-group">
                             <label class="font-medium">${opt.label}</label>
@@ -200,6 +245,12 @@
                 }
             }).join('');
             $('#configOptions').html(optionsHtml);
+        });
+        div.querySelector('button').addEventListener('click', () => {
+            components = components.filter(c => c.id !== comp.id);
+            connections = connections.filter(c => c.from !== comp.id && c.to !== comp.id);
+            workflowArea.removeChild(div);
+            drawConnections();
         });
         workflowArea.appendChild(div);
     }
@@ -219,11 +270,28 @@
     workflowArea.addEventListener('drop', (e) => {
         e.preventDefault();
         const rect = workflowArea.getBoundingClientRect();
-        const x = snapToGrid(e.clientX - rect.left);
-        const y = snapToGrid(e.clientY - rect.top);
+        let x = e.clientX - rect.left;
+        let y = e.clientY - rect.top;
         const type = e.dataTransfer.getData('type');
         const name = e.dataTransfer.getData('name');
         if (type && name) {
+            // Place new components horizontally
+            const lastComp = components[components.length - 1];
+            x = lastComp ? lastComp.x + 150 : 50;
+            y = 50;
+            x = snapToGrid(x, rect.width);
+            y = snapToGrid(y, rect.height);
+            if (isGridOccupied(x, y)) {
+                let offset = 150;
+                while (isGridOccupied(x + offset, y)) {
+                    offset += 150;
+                    if (x + offset > rect.width - 120) {
+                        alert('No space available in this row.');
+                        return;
+                    }
+                }
+                x += offset;
+            }
             const id = 'comp-' + components.length;
             const comp = { id, type, name, x, y, options: JSON.parse(JSON.stringify(componentTypes[name].options)) };
             components.push(comp);
@@ -232,13 +300,18 @@
             }
             createComponentElement(comp);
             drawConnections();
+            document.getElementById('setActiveWorkflow').classList.remove('hidden');
         } else if (draggingComponent) {
-            draggingComponent.x = snapToGrid(e.clientX - rect.left);
-            draggingComponent.y = snapToGrid(e.clientY - rect.top);
-            const element = workflowArea.querySelector(`[data-id="${draggingComponent.id}"]`);
-            element.style.left = `${draggingComponent.x}px`;
-            element.style.top = `${draggingComponent.y}px`;
-            drawConnections();
+            x = snapToGrid(x, rect.width);
+            y = snapToGrid(y, rect.height);
+            if (!isGridOccupied(x, y) || (x === draggingComponent.x && y === draggingComponent.y)) {
+                draggingComponent.x = x;
+                draggingComponent.y = y;
+                const element = workflowArea.querySelector(`[data-id="${draggingComponent.id}"]`);
+                element.style.left = `${x}px`;
+                element.style.top = `${y}px`;
+                drawConnections();
+            }
             draggingComponent = null;
         }
     });
@@ -258,12 +331,7 @@
                 }
             });
             const element = workflowArea.querySelector(`[data-id="${comp.id}"]`);
-            element.innerHTML = `
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${comp.type === 'trigger' ? 'M5 13l4 4L19 7' : 'M9 5l7 7-7 7'}" />
-                </svg>
-                ${comp.name}
-            `;
+            element.querySelector('span').textContent = comp.name;
             drawConnections();
         }
         $('#configModal').modal('hide');
@@ -284,12 +352,39 @@
         });
     });
 
-    // Clear canvas
-    document.getElementById('clearCanvas').addEventListener('click', () => {
-        components = [];
-        connections = [];
-        workflowArea.innerHTML = '';
-        drawConnections();
+    // Set active workflow
+    document.getElementById('setActiveWorkflow').addEventListener('click', () => {
+        const name = document.getElementById('workflowName').value || 'Unnamed Workflow';
+        fetch('/save_workflow/{{ client.id }}', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, components, connections })
+        })
+        .then(response => response.json())
+        .then(data => {
+            fetch(`/set_active_workflow/{{ client.id }}/${data.workflow_id}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            })
+            .then(response => response.json())
+            .then(() => {
+                alert('Workflow set as active for client.');
+                window.location.reload();
+            });
+        });
+    });
+
+    // Deactivate workflow
+    document.getElementById('deactivateWorkflow')?.addEventListener('click', () => {
+        fetch(`/set_active_workflow/{{ client.id }}/0`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        })
+        .then(response => response.json())
+        .then(() => {
+            alert('Workflow deactivated.');
+            window.location.reload();
+        });
     });
 
     // Load workflow
@@ -305,6 +400,7 @@
                     workflowArea.innerHTML = '';
                     components.forEach(comp => createComponentElement(comp));
                     drawConnections();
+                    document.getElementById('setActiveWorkflow').classList.remove('hidden');
                 });
         }
     });
@@ -330,5 +426,6 @@
     .component { transition: background-color 0.2s, transform 0.2s; }
     .component:hover { transform: scale(1.05); }
     .modal-content { transition: background-color 0.3s, color 0.3s; }
+    #workflowArea { overflow: auto; }
 </style>
 {% endblock %}
